@@ -3,7 +3,7 @@ import BuyerInfo from "./BuyerInfo/BuyerInfo";
 import CartList from "./CartList/CartList";
 import ResultFooter from "./ResultFooter/ResultFooter";
 
-const Cart = ({ getPrices, handleCartChange }) => {
+const Cart = ({ getPrices, addCartItem, cart }) => {
 
     const [formData, setFormData] = useState({
         userName: '',
@@ -26,8 +26,8 @@ const Cart = ({ getPrices, handleCartChange }) => {
     return (
         <form onSubmit={handleSubmit} className="cartForm">
             <BuyerInfo handleInputChange={handleInputChange} />
-            <CartList getPrices={getPrices}/>
-            <ResultFooter />
+            <CartList getPrices={getPrices} cart={cart} addCartItem={addCartItem}/>
+            <ResultFooter total={[...cart].reduce((total, item) => total + item.price * item.amount, 0)} />
         </form>
     );
 }

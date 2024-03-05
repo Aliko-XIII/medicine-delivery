@@ -35,6 +35,12 @@ body {
     margin-bottom: auto;
     border-right: solid black 2px;
     padding-right: 5px;
+
+
+}
+
+.navigationBtn.current {
+    font-weight: bold;
 }
 
 .navigationBtn:last-of-type {
@@ -47,7 +53,7 @@ body {
 
 .content {
     grid-area: "content";
-    background-color: lightcyan;
+    background: rgb(168, 135, 98);
     overflow: hidden;
 
 }

@@ -12,16 +12,36 @@ const App = ({ dataFetchers }) => {
         setPage(newPage);
     };
 
-    function handleCartChange(newCart) {
+    function addCartItem(newItem) {
+        const itemIndex = cart.findIndex(item =>
+            item.shop === newItem.shop && item.name === newItem.name);
+
+        const newCart = [...cart];
+        if (itemIndex === -1) {
+            newCart.push(newItem)
+        }
+        else {
+            if (newItem.caller == 'cart') {
+                newCart[itemIndex].amount = newItem.amount;
+            }
+            else {
+                newCart[itemIndex].amount++;
+            }
+        }
         setCart(newCart);
+    }
+
+    function clearEmptyItems() {
+        setCart(cart.filter(item => item.amount != 0));
+
     }
 
     return (
         <div className='appWrapper'>
-            <NavigationBar onPageChange={handlePageChange} />
+            <NavigationBar onPageChange={handlePageChange} clearEmptyItems={clearEmptyItems} current={page} />
             <div className='content'>
-                {page == 'shop' && <Shop getShops={dataFetchers.getShops} getPrices={dataFetchers.getShopsPrices} handleCartChange={handleCartChange}/>}
-                {page == 'cart' && <Cart getPrices={dataFetchers.getShopsPrices} handleCartChange={handleCartChange}/>}
+                {page == 'shop' && <Shop getShops={dataFetchers.getShops} getPrices={dataFetchers.getShopsPrices} addCartItem={addCartItem} />}
+                {page == 'cart' && <Cart getPrices={dataFetchers.getShopsPrices} addCartItem={addCartItem} cart={cart} />}
             </div>
         </div>
     );

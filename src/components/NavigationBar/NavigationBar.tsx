@@ -1,14 +1,18 @@
 import NavigationBtn from "./NavigationBtn/NavigationBtn";
 
-const NavigationBar = (props) => {
+const NavigationBar = ({ onPageChange, current, clearEmptyItems }) => {
+
+    const sitePages = ['shop', 'cart']
+
     const handleClick = (page) => {
-        props.onPageChange(page);
+        onPageChange(page);
     };
 
     return (
         <div className='navigationBar'>
-            <NavigationBtn handleClick={handleClick} page={'shop'} />
-            <NavigationBtn handleClick={handleClick} page={'cart'} />
+            {sitePages.map(sitePage =>
+                <NavigationBtn handleClick={handleClick} page={sitePage} isCurrent={current === sitePage} clearEmptyItems={clearEmptyItems} />
+            )}
         </div>
     );
 }

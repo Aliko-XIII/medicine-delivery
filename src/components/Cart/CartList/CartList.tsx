@@ -1,23 +1,15 @@
 import CartItem from "./CartItem/CartItem";
 
-const medicines = [
-    { name: 'med1', },
-    { name: 'med2', },
-    { name: 'med3', },
-    { name: 'med4', },
-    { name: 'med5', },
-    { name: 'med6', },
-    { name: 'med2', },
-    { name: 'med3', },
-    { name: 'med4', },
-    { name: 'med5', },
-    { name: 'med6', },
-]
 
-const CartList = ({ getPrices }) => {
+const CartList = ({ getPrices, cart, addCartItem }) => {
+    const medicines = [...cart];
+    let i = 0;
     return <div className="cartListWrapper">
         <ul className="cartList">
-            {medicines.map((medicine) => <CartItem name={medicine.name} price={111} />)}
+            {medicines.map((medicine) =>
+                <CartItem name={medicine.name} shop={medicine.shop}
+                    price={medicine.price} amount={medicine.amount}
+                    addCartItem={addCartItem} key={i++} />)}
         </ul>
     </div>
 }
