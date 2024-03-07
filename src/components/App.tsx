@@ -1,8 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, createContext, useState } from 'react';
 import NavigationBar from './NavigationBar/NavigationBar';
 import Shop from './Shop/Shop';
 import Cart from './Cart/Cart';
+
+export const ShopContext = createContext({
+    page: '',
+    cart: [],
+    addCartItem: (item) => { },
+    clearEmptyItems: () => { },
+    
+});
 
 const App = ({ dataFetchers }) => {
     const [page, setPage] = useState('shop')
@@ -33,17 +41,18 @@ const App = ({ dataFetchers }) => {
 
     function clearEmptyItems() {
         setCart(cart.filter(item => item.amount != 0));
-
     }
 
     return (
-        <div className='appWrapper'>
-            <NavigationBar onPageChange={handlePageChange} clearEmptyItems={clearEmptyItems} current={page} />
-            <div className='content'>
-                {page == 'shop' && <Shop getShops={dataFetchers.getShops} getPrices={dataFetchers.getShopsPrices} addCartItem={addCartItem} />}
-                {page == 'cart' && <Cart getPrices={dataFetchers.getShopsPrices} addCartItem={addCartItem} cart={cart} />}
+        <ShopContext.Provider value={{ cart: cart, page: page, addCartItem: addCartItem, clearEmptyItems: clearEmptyItems }}>
+            <div className='appWrapper'>
+                <NavigationBar onPageChange={handlePageChange} clearEmptyItems={clearEmptyItems} current={page} />
+                <div className='content'>
+                    {page == 'shop' && <Shop getShops={dataFetchers.getShops} getPrices={dataFetchers.getShopsPrices} />}
+                    {page == 'cart' && <Cart getPrices={dataFetchers.getShopsPrices} />}
+                </div>
             </div>
-        </div>
+        </ShopContext.Provider >
     );
 }
 
